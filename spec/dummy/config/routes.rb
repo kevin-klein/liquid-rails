@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   root to: 'home#index'
   get  '/index_with_layout',            to: 'home#index_with_layout'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # It works similar to Rails #content_for.
 # Calling #content_for stores a block of markup in an identifier for later use.
 # In order to access this stored content in other templates or the layout, you would pass the identifier as an argument to content_for.
@@ -16,17 +18,15 @@
 module Liquid
   module Rails
     class ContentForTag < ::Liquid::Block
-      Syntax = /(#{::Liquid::QuotedFragment}+)\s*(flush\s*(true|false))?/
+      SYNTAX = /(#{::Liquid::QuotedFragment}+)\s*(flush\s*(true|false))?/.freeze
 
       def initialize(tag_name, markup, context)
         super
 
-        if markup =~ Syntax
-          @flush = $3
-          @identifier = $1.gsub('\'', '')
-        else
-          raise SyntaxError.new("Syntax Error - Valid syntax: {% content_for [name] %}")
-        end
+        raise SyntaxError, 'Syntax Error - Valid syntax: {% content_for [name] %}' unless markup =~ SYNTAX
+
+        @flush = Regexp.last_match(3)
+        @identifier = Regexp.last_match(1).delete('\'')
       end
 
       def render(context)
@@ -52,15 +52,15 @@ end
 module Liquid
   module Rails
     class YieldTag < ::Liquid::Tag
-      Syntax = /(#{::Liquid::QuotedFragment}+)/
+      Syntax = /(#{::Liquid::QuotedFragment}+)/.freeze
 
       def initialize(tag_name, markup, context)
         super
 
         if markup =~ Syntax
-          @identifier = $1.gsub('\'', '')
+          @identifier = Regexp.last_match(1).delete('\'')
         else
-          raise SyntaxError.new("Syntax Error - Valid syntax: {% yield [name] %}")
+          raise SyntaxError, 'Syntax Error - Valid syntax: {% yield [name] %}'
         end
       end
 

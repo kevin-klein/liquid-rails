@@ -1,7 +1,15 @@
+# frozen_string_literal: true
+
 require 'liquid-rails/version'
 require 'liquid'
-require 'kaminari'
 require 'active_support/concern'
+require 'webpacker'
+require 'webpacker/helper'
+require 'parslet'
+require 'pagy'
+require 'pagy/extras/support'
+require 'pagy/extras/array'
+require 'pagy/extras/countless'
 
 module Liquid
   module Rails
@@ -20,4 +28,4 @@ module Liquid
 end
 
 require 'liquid-rails/railtie' if defined?(Rails)
-Dir[File.dirname(__FILE__) + '/liquid-rails/{filters,tags,drops}/*.rb'].each { |f| require f }
+Dir[File.dirname(__FILE__) + '/liquid-rails/{filters,tags,drops}/*.rb'].sort.each { |f| require f }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Liquid
   module Rails
     module Rspec
@@ -5,10 +7,11 @@ module Liquid
         extend ActiveSupport::Concern
 
         def setup_view_and_controller
-          @view                 = ActionView::Base.new
           @controller           = ActionController::Base.new
-          @request              = ActionDispatch::TestRequest.new({'PATH_INFO' => '/'})
+          @request              = ActionDispatch::TestRequest.new({ 'PATH_INFO' => '/' })
           @response             = ActionDispatch::TestResponse.new
+          context               = ActionView::LookupContext.new([])
+          @view                 = ActionView::Base.new(context, {}, @controller)
           @response.request     = @request
           @controller.request   = @request
           @controller.response  = @response
@@ -26,11 +29,11 @@ module Liquid
           @controller
         end
 
-        def context(assigns={})
+        def context(assigns = {})
           @context ||= ::Liquid::Context.new(assigns, {}, { helper: @view, view: @view, controller: @controller })
         end
 
-        def expect_template_result(template, expected, assigns={})
+        def expect_template_result(template, expected, assigns = {})
           # make assigns available inside context
           assigns.each do |key, value|
             context[key] = value

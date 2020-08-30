@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 module Liquid
@@ -9,7 +11,7 @@ module Liquid
 
       context 'attributes' do
         it '_attributes' do
-          expect(profile_drop.class._attributes).to eq([:name, :description])
+          expect(profile_drop.class._attributes).to eq(%i[name description])
         end
 
         it '#name and #description' do
@@ -25,7 +27,7 @@ module Liquid
 
       context '#dropify' do
         context 'single' do
-          it "instantitates with its inferred drop class" do
+          it 'instantitates with its inferred drop class' do
             drop = Liquid::Rails::Drop.dropify(profile)
 
             expect(drop).to be_instance_of(ProfileDrop)
@@ -37,7 +39,7 @@ module Liquid
             expect(drop).to be_instance_of(Liquid::Rails::Drop)
           end
 
-          it "instantitates with the caller drop class" do
+          it 'instantitates with the caller drop class' do
             drop = ReProfileDrop.dropify(profile)
             expect(drop).to be_instance_of(ReProfileDrop)
 
@@ -47,7 +49,7 @@ module Liquid
         end
 
         context 'array' do
-          it "instantitates with collection drop class" do
+          it 'instantitates with collection drop class' do
             array = [1, 2, 3]
 
             expect(Liquid::Rails::Drop.dropify(array)).to be_instance_of(Liquid::Rails::CollectionDrop)
@@ -62,7 +64,7 @@ module Liquid
           @post.comments  = [@comment]
           @comment.post   = @post
 
-          @post.recomments= [@comment]
+          @post.recomments = [@comment]
           @comment.repost = @post
 
           @post_drop      = ::PostDrop.new(@post)
@@ -71,7 +73,7 @@ module Liquid
 
         context 'has_many' do
           it '#has_many :comments' do
-            expect(@post_drop.class._associations[:comments]).to eq({:type=>:has_many, :options=>{}})
+            expect(@post_drop.class._associations[:comments]).to eq({ type: :has_many, options: {} })
           end
 
           it '#comments returns as CollectionDrop object' do
@@ -89,7 +91,7 @@ module Liquid
 
         context 'belongs_to' do
           it '#belongs_to' do
-            expect(@comment_drop.class._associations[:post]).to eq({:type=>:belongs_to, :options=>{}})
+            expect(@comment_drop.class._associations[:post]).to eq({ type: :belongs_to, options: {} })
           end
 
           it '#post returns as PostDrop object' do
@@ -110,7 +112,7 @@ module Liquid
 
         context '#to_json' do
           it 'returns hash of attributes' do
-            expect(profile_drop.to_json).to eq(%|{"name":"Name 1","description":"Description 1"}|)
+            expect(profile_drop.to_json).to eq(%({"name":"Name 1","description":"Description 1"}))
           end
         end
       end

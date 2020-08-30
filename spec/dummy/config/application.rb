@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 # Pick the frameworks you want:
-require "rails/all"
+require 'rails/all'
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
-require "liquid-rails"
+require 'liquid-rails'
 
 module Dummy
   class Application < Rails::Application

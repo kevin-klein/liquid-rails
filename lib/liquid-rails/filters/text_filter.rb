@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 module Liquid
   module Rails
     module TextFilter
       delegate \
-                :highlight,
-                :excerpt,
-                :pluralize,
-                :word_wrap,
-                :simple_format,
-
-                to: :__h__
+        :highlight,
+        :excerpt,
+        :pluralize,
+        :word_wrap,
+        :simple_format,
+        to: :__h__
 
       # right justify and padd a string
       def rjust(input, integer, padstr = '')
@@ -21,11 +22,11 @@ module Liquid
       end
 
       def underscore(input)
-        input.to_s.gsub(' ', '_').gsub('/', '_').underscore
+        input.to_s.tr(' ', '_').tr('/', '_').underscore
       end
 
       def dasherize(input)
-        input.to_s.gsub(' ', '-').gsub('/', '-').dasherize
+        input.to_s.tr(' ', '-').tr('/', '-').dasherize
       end
 
       def concat(input, *args)
@@ -36,9 +37,9 @@ module Liquid
 
       private
 
-        def __h__
-          @context.registers[:view]
-        end
+      def __h__
+        @context.registers[:view]
+      end
     end
   end
 end
